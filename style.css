@@ -1,0 +1,684 @@
+/* Root Variables for Color Palette and Themes */
+:root {
+    --bg-gradient: radial-gradient(circle at center, #230b42, #07020d); /* Deeper romantic dark violet background */
+    --accent-gold: #d4af37;
+    --accent-gold-glow: rgba(212, 175, 55, 0.4);
+    
+    /* Animations */
+    --transition-slow: 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-medium: 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Global Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    background: var(--bg-gradient);
+    font-family: 'Montserrat', sans-serif;
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 20px 0;
+}
+
+/* Sparkles Canvas */
+#heartCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Glassmorphic UI Controls */
+.glass-btn {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 10;
+    outline: none;
+}
+
+.glass-btn:hover {
+    background: rgba(255, 255, 255, 0.18);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px 0 rgba(244, 63, 94, 0.3);
+    border-color: rgba(244, 63, 94, 0.4);
+}
+
+.glass-btn:active {
+    transform: translateY(-1px);
+}
+
+/* Music Button Specifics */
+#musicToggle {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+}
+
+.icon-music {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.5s ease;
+}
+
+#musicToggle.playing .icon-music {
+    transform: rotate(360deg);
+    color: #ff758f;
+}
+
+/* App Layout Container */
+.app-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    padding: 40px 20px;
+    position: relative;
+    min-height: 100%;
+}
+
+/* App Container Blur Overlay when an envelope is focused */
+.app-container::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(10, 4, 18, 0.78);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 40; /* Sits in front of background and inactive envelopes */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.app-container.active-mode::after {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Header Text styling */
+.app-header {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 10px;
+    z-index: 5;
+    transition: opacity 0.5s ease;
+}
+
+.app-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    background: linear-gradient(to right, #ff758f, #ff758f, #fdfbf7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.app-header .subtitle {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.75);
+    letter-spacing: 0.5px;
+}
+
+/* Envelopes Flex Grid Layout */
+.envelopes-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    width: 100%;
+    max-width: 1200px;
+    transition: all 0.5s ease;
+    flex-wrap: wrap; /* Wrap on smaller screens */
+    margin: 20px 0;
+}
+
+/* Individual Item Container */
+.envelope-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.envelope-label {
+    font-family: 'Montserrat', sans-serif;
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 6px 16px;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    pointer-events: none;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* CSS Theme Variables per Envelope */
+.theme-burgundy {
+    --env-back-bg: #4a0e17;
+    --env-front-bg: #801423;
+    --env-flap-bg: #982232;
+    --env-flap-inner: #5c0f1b;
+    --env-fold-bg: #8e1c2b;
+    --letter-bg: #fdfbf7;
+    --letter-text: #2c1a1d;
+    --letter-border: rgba(184, 134, 11, 0.2);
+}
+
+.theme-midnight {
+    --env-back-bg: #0b131f;
+    --env-front-bg: #14213d;
+    --env-flap-bg: #1e355e;
+    --env-flap-inner: #0f1a30;
+    --env-fold-bg: #192b4f;
+    --letter-bg: #f6f8fb;
+    --letter-text: #111d33;
+    --letter-border: rgba(30, 80, 150, 0.2);
+}
+
+.theme-blush {
+    --env-back-bg: #4c1a26;
+    --env-front-bg: #803043;
+    --env-flap-bg: #a84c62;
+    --env-flap-inner: #5c1e2e;
+    --env-fold-bg: #943d52;
+    --letter-bg: #fff5f6;
+    --letter-text: #4a1525;
+    --letter-border: rgba(200, 100, 130, 0.2);
+}
+
+/* 3D Envelope Wrapper and Perspective Setup */
+.envelope-wrapper {
+    perspective: 1500px;
+    width: 360px;
+    height: 240px;
+    position: relative;
+    filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.5));
+    animation: floatEnvelope 4s ease-in-out infinite;
+    transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.5s ease;
+}
+
+@keyframes floatEnvelope {
+    0%, 100% {
+        transform: translateY(0) rotateX(2deg);
+    }
+    50% {
+        transform: translateY(-8px) rotateX(-2deg);
+    }
+}
+
+/* The Envelope Container */
+.envelope {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+/* Dark Inside Back of the Envelope */
+.envelope::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--env-back-bg);
+    border-radius: 8px;
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.85);
+    transform: translateZ(0);
+    z-index: 1;
+}
+
+/* Front Faces & Folds */
+/* Left Fold Triangle */
+.envelope-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--env-fold-bg);
+    clip-path: polygon(0 0, 52% 50%, 0 100%);
+    z-index: 4;
+    transform: translateZ(3px);
+    filter: drop-shadow(2px 0 2px rgba(0,0,0,0.15));
+}
+
+/* Right Fold Triangle */
+.envelope-right {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--env-fold-bg);
+    clip-path: polygon(100% 0, 48% 50%, 100% 100%);
+    z-index: 4;
+    transform: translateZ(3px);
+    filter: drop-shadow(-2px 0 2px rgba(0,0,0,0.15));
+}
+
+/* Bottom Fold Triangle */
+.envelope-bottom {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--env-front-bg);
+    clip-path: polygon(0 100%, 50% 48%, 100% 100%);
+    z-index: 5;
+    transform: translateZ(4px);
+    filter: drop-shadow(0 -3px 5px rgba(0,0,0,0.25));
+}
+
+/* Top Flap (Lid) */
+.envelope-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--env-flap-bg);
+    clip-path: polygon(0 0, 100% 0, 50% 52%);
+    transform-origin: top center;
+    transform: rotateX(0deg) translateZ(5px);
+    transition: transform var(--transition-slow), z-index 0.3s ease;
+    z-index: 6;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+}
+
+/* Heart Seal */
+.envelope-seal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    transform: translate(-50%, -40%) translateZ(6px);
+    z-index: 7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.seal-heart {
+    font-size: 34px;
+    color: #ff3366;
+    filter: drop-shadow(0 4px 8px rgba(255, 51, 102, 0.5)) drop-shadow(0 0 2px #fff);
+    animation: heartbeat 1.5s infinite;
+    user-select: none;
+}
+
+@keyframes heartbeat {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.15);
+    }
+}
+
+.envelope-seal:hover {
+    transform: translate(-50%, -40%) translateZ(10px) scale(1.2);
+}
+
+/* Open Envelope States */
+.envelope.open .envelope-flap {
+    transform: rotateX(180deg) translateZ(5px);
+    z-index: 2; /* Move flap behind the card when flipped open */
+    background: var(--env-flap-inner);
+    filter: drop-shadow(0 -5px 10px rgba(0,0,0,0.5));
+}
+
+.envelope.open .envelope-seal {
+    transform: translate(-50%, -40%) scale(0) rotate(180deg);
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* The Letter Card inside */
+.letter-card {
+    position: absolute;
+    width: 92%;
+    height: 90%;
+    top: 5%;
+    left: 4%;
+    background: var(--letter-bg);
+    border-radius: 6px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15), inset 0 0 20px rgba(0,0,0,0.03);
+    z-index: 3; /* Behind folds initially */
+    transform: translateZ(2px);
+    transition: transform var(--transition-slow), z-index 0.3s ease;
+    overflow: hidden;
+}
+
+/* Add a gold border around the card contents */
+.letter-content {
+    width: 100%;
+    height: 100%;
+    border: 2px solid var(--letter-border);
+    border-radius: 4px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: auto;
+    position: relative;
+}
+
+/* Scrollbar styles for the letter text */
+.letter-content::-webkit-scrollbar {
+    width: 4px;
+}
+.letter-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+.letter-content::-webkit-scrollbar-thumb {
+    background: rgba(184, 134, 11, 0.3);
+    border-radius: 10px;
+}
+
+.letter-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.45rem;
+    color: var(--letter-text);
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: 600;
+    border-bottom: 1px dashed var(--letter-border);
+    padding-bottom: 8px;
+}
+
+.letter-body {
+    font-family: 'Patrick Hand', 'Quicksand', 'Montserrat', sans-serif;
+    font-size: 1.15rem;
+    letter-spacing: 0.3px;
+    line-height: 1.55;
+    color: var(--letter-text);
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.letter-body p {
+    margin-bottom: 12px;
+    text-indent: 15px;
+}
+
+.letter-footer {
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #8c7377;
+    margin-top: 8px;
+}
+
+/* Letter slides out of the envelope when opened */
+.envelope.open .letter-card {
+    /* Slide out and sit way in front */
+    transform: translateY(-165px) translateZ(30px) scale(1.05);
+    height: 145%; /* Expand to let the letter be read easily */
+    z-index: 8;   /* Sits in front of ALL envelope folds */
+    box-shadow: 0 35px 70px rgba(0,0,0,0.6), 0 0 45px rgba(244, 63, 94, 0.2);
+}
+
+/* Subtitle / Instructions */
+.instruction {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.95rem;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    animation: pulseGlow 2s infinite ease-in-out;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+    z-index: 5;
+}
+
+@keyframes pulseGlow {
+    0%, 100% {
+        opacity: 0.6;
+        transform: translateY(0);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(-4px);
+    }
+}
+
+.instruction.hide {
+    opacity: 0;
+}
+
+/* Reset / Tutup Button */
+#resetBtn {
+    margin-top: 10px;
+    transform: translateY(20px);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 100; /* Sits in front of backdrop overlay */
+}
+
+#resetBtn.show {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#resetBtn.hide {
+    transform: translateY(20px);
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* --- ACTIVE / FOCUS STATE (CENTRALIZING & DIMMING) --- */
+
+/* Dim other elements when one envelope is selected */
+.app-container.active-mode .app-header {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.app-container.active-mode .envelope-label {
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.app-container.active-mode .envelope-item:not(.active-item) {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.85);
+}
+
+/* Place the active item in fixed position centered */
+.app-container.active-mode .active-item .envelope-wrapper {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.1) !important;
+    z-index: 100; /* Above backdrop overlay (which is 40) */
+    animation: none !important; /* Stop float animation */
+}
+
+/* Responsive scaling for smaller devices */
+@media (max-width: 1200px) {
+    .envelopes-grid {
+        gap: 30px;
+        max-width: 900px;
+    }
+}
+
+@media (max-width: 800px) {
+    body {
+        overflow-y: auto;
+    }
+    .envelopes-grid {
+        flex-direction: column;
+        gap: 40px;
+    }
+}
+
+@media (max-width: 520px) {
+    .envelope-wrapper {
+        transform: scale(0.85);
+    }
+    @keyframes floatEnvelope {
+        0%, 100% { transform: scale(0.85) translateY(0) rotateX(2deg); }
+        50% { transform: scale(0.85) translateY(-6px) rotateX(-2deg); }
+    }
+    .letter-title {
+        font-size: 1.3rem;
+    }
+    .letter-body {
+        font-size: 1.1rem;
+        line-height: 1.5;
+    }
+    .letter-card {
+        padding: 16px;
+    }
+    
+    /* Focused mobile scale adjust */
+    .app-container.active-mode .active-item .envelope-wrapper {
+        transform: translate(-50%, -50%) scale(1) !important;
+        width: 90vw;
+        height: 60vw;
+    }
+}
+
+/* --- SURPRISE OVERLAY & FIREWORKS STYLING --- */
+.surprise-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(8, 2, 15, 0.88);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    z-index: 200; /* On top of everything */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.surprise-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.surprise-overlay.hide {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.surprise-content {
+    text-align: center;
+    padding: 40px;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 
+                0 0 50px rgba(255, 117, 143, 0.2), 
+                inset 0 0 30px rgba(255, 255, 255, 0.02);
+    max-width: 500px;
+    width: 90%;
+    transform: scale(0.85);
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.surprise-overlay.show .surprise-content {
+    transform: scale(1);
+}
+
+.surprise-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    color: #fff;
+    text-shadow: 0 0 20px rgba(255, 117, 143, 0.6), 0 4px 10px rgba(0,0,0,0.5);
+    animation: textGlow 2.5s infinite ease-in-out;
+}
+
+@keyframes textGlow {
+    0%, 100% {
+        text-shadow: 0 0 20px rgba(255, 117, 143, 0.6), 0 4px 10px rgba(0,0,0,0.5);
+    }
+    50% {
+        text-shadow: 0 0 35px rgba(255, 117, 143, 1), 0 0 10px #fff, 0 4px 10px rgba(0,0,0,0.5);
+    }
+}
+
+.surprise-subtitle {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+    letter-spacing: 0.5px;
+}
+
+#closeSurprise {
+    margin-top: 10px;
+    border-color: rgba(255, 117, 143, 0.4);
+    box-shadow: 0 8px 32px 0 rgba(255, 117, 143, 0.2);
+}
+
+#closeSurprise:hover {
+    box-shadow: 0 12px 40px 0 rgba(255, 117, 143, 0.4);
+    background: rgba(255, 117, 143, 0.2);
+}
